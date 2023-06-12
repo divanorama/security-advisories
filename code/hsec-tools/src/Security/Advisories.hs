@@ -49,10 +49,9 @@ import Data.Functor ((<&>))
 import Data.Functor.Identity (Identity (Identity))
 import Data.List.NonEmpty (NonEmpty (..))
 import Data.Map (Map)
-import Data.Maybe (listToMaybe, maybeToList)
 import Data.Either.Extra (maybeToEither)
 import qualified Data.Map as Map
-import Data.Maybe (fromMaybe)
+import Data.Maybe (fromMaybe, listToMaybe, mapMaybe)
 import qualified Data.Set as Set
 import Data.Text (Text)
 import qualified Data.Text as T
@@ -431,7 +430,7 @@ firstHeading :: Block -> Either Text Inline
 firstHeading = maybeToEither "Does not have summary heading" . go where
   go (Heading _ h) = Just h
   go (AddAttributes _ b) = go b
-  go (BSeq bs) = listToMaybe . concatMap (maybeToList . go) $ bs
+  go (BSeq bs) = listToMaybe . mapMaybe go $ bs
   go (BRanged  _ b) = go b
   go _ = Nothing
 
